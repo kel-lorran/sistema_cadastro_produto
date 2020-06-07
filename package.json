@@ -1,0 +1,20 @@
+{
+  "name": "sistema_cadastro_produto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kel-lorran/sistema_cadastro_produto.git"
+  },
+  "keywords": [],
+  "author": "kelvin jesus <kelvinlorran2017@gmail.com> (https://github.com/kel-lorran)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kel-lorran/sistema_cadastro_produto/issues"
+  },
+  "homepage": "https://github.com/kel-lorran/sistema_cadastro_produto#readme"
+}
