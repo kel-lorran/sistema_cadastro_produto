@@ -42,4 +42,7 @@ export default class FichaTecnica extends EntidadeDominio {
   addAcessorio(newAcessorio: Acessorio) {
     this._acessorioList.push(newAcessorio)
   }
+  removeAcessorio(callback: (e: Acessorio, i: number) => Acessorio) {
+    this._acessorioList = this._acessorioList.filter(callback)
+  }
 }

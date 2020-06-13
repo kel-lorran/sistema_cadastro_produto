@@ -17,6 +17,7 @@ const objExpct = {
   _acessorioList: acessorioList
 };
 const fichaTecnica = new FichaTecnica(...Object.values(objExpct));
+const fichaTecnica2 = new FichaTecnica(...Object.values(objExpct));
 
 describe('FichaTecnicaDAO service of persistence', () => {
   describe('criar method', () => {
@@ -32,7 +33,78 @@ describe('FichaTecnicaDAO service of persistence', () => {
       expect(result.erro).toEqual(0);
       expect(result.data).toHaveLength(1);
       expect(result.data[0].id.toString()).toMatch(/^[\d]+$/);
-      console.log(result.data[0].acessorioList);
+    });
+  });
+
+  describe.skip('alterar method', () => {
+    it('should exists this method', () => {
+      const dao = new FichaTecnicaDAO();
+      expect(dao).toBeInstanceOf(FichaTecnicaDAO);
+      expect(dao.alterar).toBeDefined();
+    });
+
+    it('should return one FichaTecnica with atributes updated', async () => {
+      const randomNum = (Math.random()*100).toFixed(0);
+      const oldNome = fichaTecnica2.nome;
+      fichaTecnica2.id = 2;
+      fichaTecnica2.nome += randomNum
+      const dao = new FichaTecnicaDAO();
+      const result = await dao.alterar(fichaTecnica2);
+      expect(result.erro).toEqual(0);
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].nome).toEqual(`${oldNome}${randomNum}`);
+    });
+
+    it('should return one FichaTecnica with acessorioList increment', async () => {
+      const oldLenListAcessorio = fichaTecnica2.acessorioList.length;
+      const acessorio3 = new Acessorio('porta copo', 'dispositivo de portar copos', 41);
+      fichaTecnica2.addAcessorio(acessorio3);
+      const dao = new FichaTecnicaDAO();
+      const result = await dao.alterar(fichaTecnica2);
+      expect(result.erro).toEqual(0);
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].acessorioList).toHaveLength(oldLenListAcessorio + 1);
+    });
+
+    it('should return one FichaTecnica with acessorioList decrement', async () => {
+      const oldLenListAcessorio = fichaTecnica2.acessorioList.length;
+      fichaTecnica2.removeAcessorio((e, i) => i );
+      const dao = new FichaTecnicaDAO();
+      const result = await dao.alterar(fichaTecnica2);
+      expect(result.erro).toEqual(0);
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].acessorioList).toHaveLength(oldLenListAcessorio - 1);
+    });
+  });
+
+  describe('consultar method', () => {
+    it('should exists this method', () => {
+      const dao = new FichaTecnicaDAO();
+      expect(dao).toBeInstanceOf(FichaTecnicaDAO);
+      expect(dao.consultar).toBeDefined();
+    });
+    
+    it('should return all FichaTecnica when called without param', async () => {
+      const dao = new FichaTecnicaDAO();
+      const result = await dao.consultar();
+      expect(result.erro).toEqual(0);
+      expect(result.data.length > 1).toBe(true);
+      expect(result.data[0]).toBeInstanceOf(FichaTecnica);
+    });
+  });
+
+  describe('excluir method', () => {
+    it('should exists this method', () => {
+      const dao = new FichaTecnicaDAO();
+      expect(dao).toBeInstanceOf(FichaTecnicaDAO);
+      expect(dao.excluir).toBeDefined();
+    });
+    it('shoul delete element by id', async () => {
+      const dao = new FichaTecnicaDAO();
+      const result = await dao.excluir(2);
+      expect(result.erro).toEqual(0);
+      const select = await dao.consultar(1);
+      expect(select.data.length).toEqual(0);
     });
   });
 });
