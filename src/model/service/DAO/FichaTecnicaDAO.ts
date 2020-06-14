@@ -2,7 +2,6 @@ import IDAO from './IDAO';
 import AcessorioDAO from './AcessorioDAO'
 import ConnectionFactory from './ConnectionFactory';
 import FichaTecnica from '../../dominio/FichaTecnica';
-import Acessorio from '../../dominio/Acessorio';
 import Result from '../../../utils/Result';
 
 type operation = 'criar' | 'deletar' | 'consultar';
@@ -17,7 +16,13 @@ export default class FichaTecnicaDAO implements IDAO {
       .insert(this.converToDb(f));
 
     const pAcessorios = f.acessorioList
-      .map(a => (new AcessorioDAO()).criar(a));
+      .map(a => {
+        const dao = new AcessorioDAO();
+        if(a.id){
+          return dao.alterar(a)
+        }
+        return dao.criar(a)
+      });
 
     const [[fic_id], ...resultList] = await Promise.all([pFicha,...pAcessorios]);   
     f.acessorioList = resultList.reduce((acc, result) => [...acc,...result.data],[]);
@@ -101,8 +106,31 @@ export default class FichaTecnicaDAO implements IDAO {
     const arrTemp: FichaTecnica[] = [];
     if(!f){
       arrTemp.push(
-        ...await this.con('ficha_tecnica').select('*')
+        ...await this.con('ficha_tecnica')
+          .select('*')
           .then(data => data.map( f => this.converToDominio(f)))
+      );
+    } else if(f.id) {
+      arrTemp.push(
+        ...await this.con('ficha_tecnica')
+          .select('*')
+          .where({ fic_id: f.id})
+          .then(data => data.map( f => this.converToDominio(f)))
+      );
+    } else {
+      arrTemp.push(
+        ...await Object.entries(this.converToDb(f))
+          .filter( e => !!e[1])
+          .reduce(
+            (acc, entrie, index) => {
+              let condition = 'orWhere';
+              if(!index){
+                condition = 'where';
+              }
+              return acc[condition](entrie[0], 'like', `%${entrie[1]}%`);
+            },
+            this.con('ficha_tecnica').select('*')
+          )
       );
     }
 

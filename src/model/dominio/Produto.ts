@@ -1,6 +1,7 @@
 import FichaTecnica from './FichaTecnica';
+import EntidadeDominio from './EntidadeDominio';
 
-export default class Produto {
+export default class Produto extends EntidadeDominio {
   nome: string;
   valor: number;
   dataEntrada: number;
@@ -15,6 +16,7 @@ export default class Produto {
     funcionario: string,
     fichaTecnica: FichaTecnica | undefined
   ) {
+    super();
     this.nome = nome,
     this.valor = valor,
     this.dataEntrada = dataEntrada,
