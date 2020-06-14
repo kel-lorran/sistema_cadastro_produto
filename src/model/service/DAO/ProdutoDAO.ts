@@ -38,12 +38,14 @@ export default class ProdutoDAO implements IDAO {
     }
     const daoFichaTenica = new FichaTecnicaDAO();
     await daoFichaTenica.alterar(prod.fichaTecnica)
-      .then( result => {
+      .then( ({ erro, data:[fichaTecnicaUpdated]}) => {
         const pro_id = prod.id;
-        if(!result.erro){
+        const fic_id = fichaTecnicaUpdated.id;
+        prod.fichaTecnica.id = fic_id;
+        if(!erro){
           return this.con('produto')
             .where({pro_id})
-            .update(this.converToDb(prod, pro_id))
+            .update(this.converToDb(prod, fic_id))
             .then( resp => flag = resp);
         }
       });
@@ -56,7 +58,6 @@ export default class ProdutoDAO implements IDAO {
   }
 
   async consultar(prod: Produto): Promise<Result> {
-    debugger;
     let objAtributeFilter = {};
     const arrTemp = []
     if(!prod){
@@ -102,6 +103,22 @@ export default class ProdutoDAO implements IDAO {
       0,
       await Promise.all(pProdutosWithFicha)
     )
+  }
+
+  async excluir(id: number): Promise<Result> {
+    if(!id){
+      throw 'operation delete without where id in table produto deny';
+    }
+
+    const flag = await this.con('produto')
+      .where('produto.pro_id',id)
+      .del()
+  
+    return new Result(
+      flag ? 'sucesso' : 'falha',
+      flag ? 0 : 1,
+      []
+    );
   }
 
   converToDb(p: Produto, fic_id: number){

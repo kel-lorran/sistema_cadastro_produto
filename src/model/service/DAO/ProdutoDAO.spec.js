@@ -71,9 +71,9 @@ describe('ProdutoDAO service of persistence', () => {
       expect(result.data).toHaveLength(1);
       expect(result.data[0].nome).toEqual(`${oldNome}${randomNum}`);
       produto2.nome = oldNome;
+      expect(result.data[0].fichaTecnica.id).toEqual(fichaTecnicaWithId.id);
     });
   });
-
   describe('consultar method', () => {
     it('should exists this method', () => {
       const dao = new ProdutoDAO();
@@ -100,13 +100,30 @@ describe('ProdutoDAO service of persistence', () => {
       expect(result.data[0].id).toEqual(3);
     });
     
-    it('should return selected Produto by other atribute', async () => {
+    it.skip('should return selected Produto by other atribute', async () => {
       const dao = new ProdutoDAO();
       const result = await dao.consultar({ nome: 'subaru imprenza sxz71', quantidade: 21});
       expect(result.erro).toEqual(0);
       expect(result.data.length > 1).toBe(true);
       expect(result.data.map( prod => prod.quantidade).includes(21)).toBe(true);
       expect(result.data.map( prod => prod.nome).includes('subaru imprenza sxz71')).toBe(true);
+    });
+  });
+  describe('excluir method', () => {
+    it('should exists this method', () => {
+      const dao = new ProdutoDAO();
+      expect(dao).toBeInstanceOf(ProdutoDAO);
+      expect(dao.excluir).toBeDefined
+    });
+    it('should delete element by id', async () => {
+      const dao = new ProdutoDAO();
+      let {erro,data:[{id}]} = await dao.criar(produto);
+      expect(erro).toEqual(0);
+
+      const result = await dao.excluir(id);
+      expect(result.erro).toEqual(0);
+      const {data} = await dao.consultar({id});
+      expect(data.length).toEqual(0);
     });
   });
 });

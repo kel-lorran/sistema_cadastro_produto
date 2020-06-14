@@ -2,7 +2,8 @@
 exports.up = function(knex) {
   return knex.schema
     .createTable('ficha_tecnica_acessorio', function(t) {
-      t.integer('ace_id').primary();
+      t.increments('fta_id').primary();
+      t.integer('ace_id').notNullable();
       t.foreign('ace_id').references('ace_id').inTable('acessorio');
       t.integer('fic_id').notNullable();
       t.foreign('fic_id').references('fic_id').inTable('ficha_tecnica');

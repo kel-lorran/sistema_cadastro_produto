@@ -93,18 +93,21 @@ describe('FichaTecnicaDAO service of persistence', () => {
     });
   });
 
-  describe('excluir method', () => {
+  describe.only('excluir method', () => {
     it('should exists this method', () => {
       const dao = new FichaTecnicaDAO();
       expect(dao).toBeInstanceOf(FichaTecnicaDAO);
       expect(dao.excluir).toBeDefined();
     });
-    it('shoul delete element by id', async () => {
+    it('should delete element by id', async () => {
       const dao = new FichaTecnicaDAO();
-      const result = await dao.excluir(2);
+      let {erro,data:[{id}]} = await dao.criar(fichaTecnica);
+      expect(erro).toEqual(0);
+
+      const result = await dao.excluir(id);
       expect(result.erro).toEqual(0);
-      const select = await dao.consultar(1);
-      expect(select.data.length).toEqual(0);
+      const {data} = await dao.consultar({id});
+      expect(data.length).toEqual(0);
     });
   });
 });

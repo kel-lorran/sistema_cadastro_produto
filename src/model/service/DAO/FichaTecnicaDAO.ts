@@ -66,6 +66,8 @@ export default class FichaTecnicaDAO implements IDAO {
         resToDeleteAcessorio.delete(a.id);
         restToCreateRelacionamento.delete(a.id)
         return acessorioDao.alterar(a);
+      } else if (a.id) {
+        return acessorioDao.alterar(a);
       }
       return acessorioDao.criar(a)
       .then((result) => {
@@ -90,7 +92,6 @@ export default class FichaTecnicaDAO implements IDAO {
         this.maniupulaRelacionamento('criar',{ ace_id, fic_id: f.id})
       );
     }
-    debugger;
       
     const anotherAnyReturn  = await Promise.all(pCriarRelacionamento);
       
@@ -144,7 +145,6 @@ export default class FichaTecnicaDAO implements IDAO {
         .select('acessorio.*')
         .then( data => data.map(a => f.addAcessorio( acessorioDao.converToDominio(a))))
     });
-    debugger;
 
     await Promise.all(pAcessorrioList);
 
