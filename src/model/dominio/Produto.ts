@@ -14,7 +14,7 @@ export default class Produto extends EntidadeDominio {
     dataEntrada: number,
     quantidade: number,
     funcionario: string,
-    fichaTecnica: FichaTecnica | undefined
+    fichaTecnica: FichaTecnica | undefined = undefined
   ) {
     super();
     this.nome = nome,
@@ -22,7 +22,7 @@ export default class Produto extends EntidadeDominio {
     this.dataEntrada = dataEntrada,
     this.quantidade = quantidade,
     this.funcionario = funcionario,
-    this._fichaTecnica = fichaTecnica
+    this._fichaTecnica = fichaTecnica 
   }
   get fichaTecnica(){
     return this._fichaTecnica;

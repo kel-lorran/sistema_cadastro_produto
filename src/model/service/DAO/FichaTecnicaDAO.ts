@@ -44,6 +44,8 @@ export default class FichaTecnicaDAO implements IDAO {
     return result;
   }
   async alterar(f: FichaTecnica): Promise<Result> {
+
+    debugger;
     if(!f.id){
       throw 'operation update without where condition in table fichaTecnica deny';
     }
@@ -57,13 +59,13 @@ export default class FichaTecnicaDAO implements IDAO {
     .then(data => new Set(data.map(e => e.ace_id)));
     
     
-    const [flag,resToDeleteAcessorio] = await Promise.all([pFicha,pRelacionamento]);
+    const [flag,resToDeleteRelacionamento] = await Promise.all([pFicha,pRelacionamento]);
     const restToCreateRelacionamento = new Set(f.acessorioList.map(({id}) => id).filter(e => e));
     
     const acessorioDao = new AcessorioDAO();
     const arrResults = await f.acessorioList.map(a => {
-      if(a.id && resToDeleteAcessorio.has(a.id)){
-        resToDeleteAcessorio.delete(a.id);
+      if(a.id && resToDeleteRelacionamento.has(a.id)){
+        resToDeleteRelacionamento.delete(a.id);
         restToCreateRelacionamento.delete(a.id)
         return acessorioDao.alterar(a);
       } else if (a.id) {
@@ -78,8 +80,7 @@ export default class FichaTecnicaDAO implements IDAO {
     });
     
     const pDeleteAcessorio = []
-    for (let ace_id of resToDeleteAcessorio){
-      pDeleteAcessorio.push(acessorioDao.excluir(ace_id));
+    for (let ace_id of resToDeleteRelacionamento){
       pDeleteAcessorio.push(this.maniupulaRelacionamento('deletar',{ ace_id }))
     }
     

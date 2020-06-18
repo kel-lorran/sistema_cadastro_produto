@@ -53,7 +53,7 @@ export default class ProdutoDAO implements IDAO {
     return new Result(
       flag ? 'sucesso' : 'falha',
       flag ? 0 : 1,
-      [prod]
+      flag ? [prod] : []
     );
   }
 

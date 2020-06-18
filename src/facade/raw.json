@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "produto": {
+        "id": 1,
+        "nome": "subaru imprenza sxz",
+        "valor": 123000,
+        "dataEntrada": 1591562332197,
+        "quantidade": 6,
+        "funcionario": "José das Neves"
+      },
+      "fichaTecnica": {
+        "id": 1,
+        "categoria": "sedan",
+        "subCategoria": "offroad",
+        "nome": "impreza",
+        "descricao": "carrão dos rally",
+        "componenteBasico": "subaro impreza default",
+        "componentePrimario": "kit motors offroad",
+        "componenteSecundario": "caranagem de rally",
+        "observacoes": "somente na cor azul"
+      },
+      "acessorioList": [
+        {
+          "id": 2,
+          "nome": "espelho central",
+          "descricao": "dispositivo de visualização posterior",
+          "quantidade": 4
+        },
+        {
+          "id": 1,
+          "nome": "porta copo",
+          "descricao": "dispositivo de portar copos",
+          "quantidade": 41
+        }
+      ]
+    }
+  ],
+  "metadata": {}
+}
