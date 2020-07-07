@@ -16,11 +16,12 @@ const fichaTecnica = new FichaTecnica (
   acessorioList
 );
 const objExpct = {
+  status: true,
   nome: 'subaru imprenza sxz',
   valor: 123000.00,
   dataEntrada: 1591562332197,
   quantidade: 6,
-  funcionario: 'José das Neves',
+  comprador: 'José das Neves',
   _fichaTecnica: fichaTecnica
 }
 

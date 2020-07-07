@@ -123,28 +123,31 @@ export default class ProdutoDAO implements IDAO {
 
   converToDb(p: Produto, fic_id: number){
     const objDb = {};
+    p.status && (objDb['pro_status'] = p.status);
     p.nome && (objDb['pro_nome'] = p.nome);
     p.valor && (objDb['pro_valor'] = p.valor);
     p.dataEntrada && (objDb['pro_data_entrada'] = p.dataEntrada);
     p.quantidade && (objDb['pro_quantidade'] = p.quantidade);
-    p.funcionario && (objDb['pro_funcionario'] = p.funcionario);
+    p.comprador && (objDb['pro_comprador'] = p.comprador);
     fic_id && (objDb['fic_id'] = fic_id);
     return objDb
   }
   converToDominio({
     pro_id: id,
+    pro_status: status,
     pro_nome: nome,
     pro_valor: valor,
     pro_data_entrada: dataEntrada,
     pro_quantidade: quantidade,
-    pro_funcionario: funcionario,
+    pro_comprador: comprador,
   }){
     const p = new Produto(
+      status,
       nome,
       valor,
       dataEntrada,
       quantidade,
-      funcionario,
+      comprador,
       undefined
     );
     p.id = id;
